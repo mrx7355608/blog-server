@@ -6,11 +6,11 @@ import morgan from "morgan";
 import passport from "passport";
 import session from "express-session";
 import passportSetup from "./passportSetup.js";
+import connectMongo from "connect-mongodb-session";
 import { catch404, globalErrorHandler } from "./utils/errorHandlers.js";
 import authRouter from "./routes/auth.js";
 import userRouter from "./routes/user.js";
-import connectMongo from "connect-mongodb-session";
-import connectToDatabase from "./utils/db.js";
+import blogRouter from "./routes/blogs.js";
 
 const app = express();
 
@@ -53,6 +53,7 @@ passportSetup();
 // ROUTES
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/blogs", blogRouter);
 
 // ERROR HANDLERS
 app.use(catch404);
