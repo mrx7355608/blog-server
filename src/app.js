@@ -9,6 +9,8 @@ import passportSetup from "./passportSetup.js";
 import { catch404, globalErrorHandler } from "./utils/errorHandlers.js";
 import authRouter from "./routes/auth.js";
 import userRouter from "./routes/user.js";
+import connectMongo from "connect-mongodb-session";
+import connectToDatabase from "./utils/db.js";
 
 const app = express();
 
@@ -23,9 +25,17 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+const MongoStore = connectMongo(session);
+const mongoSessionStore = new MongoStore({
+    uri: process.env.DB_URL,
+    collection: "sessions",
+    databaseName: "blog",
+});
 app.use(
     session({
         secret: process.env.SESSIONS_SECRET,
+        store: mongoSessionStore,
         cookie: {
             maxAge: 24 * 3600 * 1000,
             httpOnly: true,
