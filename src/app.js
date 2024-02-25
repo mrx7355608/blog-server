@@ -9,7 +9,7 @@ const app = express();
 
 app.use(helmet());
 app.use(hpp());
-app.use(morgan("commmon"));
+app.use(morgan("combined"));
 app.use(
     cors({
         origin: process.env.FRONTEND_URL,
