@@ -2,9 +2,9 @@ import { Router } from "express";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import BlogModel from "../models/blog.model.js";
 import ApiError from "../utils/ApiError.js";
-import validator from "validator";
 import slugify from "slugify";
 import blogValidator from "../validators/blog.validator.js";
+import validateBlogId from "../middlewares/validateBlogId.js";
 
 const router = Router();
 
@@ -33,13 +33,9 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET BLOG BY ID
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", validateBlogId, async (req, res, next) => {
     try {
         const blogID = req.params.id;
-        // Validate blog id
-        if (validator.isMongoId() === false) {
-            throw new ApiError("Invalid blog id", 400);
-        }
 
         // Check if blog exists
         const blog = await BlogModel.findById(blogID);
@@ -56,6 +52,9 @@ router.get("/:id", async (req, res, next) => {
         next(err);
     }
 });
+
+// Created a middleware to allow authenticated requests only
+router.use(isAuthenticated);
 
 // CREATE POST
 router.post("/", async (req, res, next) => {
@@ -82,4 +81,57 @@ router.post("/", async (req, res, next) => {
     }
 });
 
-router.use(isAuthenticated);
+// EDIT BLOG
+router.patch("/:id", validateBlogId, async (req, res, next) => {
+    try {
+        const blogID = req.params.id;
+        const newBlogData = req.body;
+
+        // Validate new blog data
+        blogValidator(newBlogData);
+
+        // Check if blog exists
+        const blog = await BlogModel.findById(blogID);
+        if (!blog) {
+            throw new ApiError("Blog not found", 404);
+        }
+
+        // Update blog
+        const updatedBlog = await BlogModel.findByIdAndUpdate(
+            blogID,
+            newBlogData,
+            {
+                new: true,
+            },
+        );
+
+        return res.status(200).json({
+            ok: true,
+            data: updatedBlog,
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
+// DELETE BLOG
+router.delete("/:id", validateBlogId, async (req, res, next) => {
+    try {
+        const blogID = req.params.id;
+
+        // Check if blog exists
+        const blog = await BlogModel.findById(blogID);
+        if (!blog) {
+            throw new ApiError("Blog not found", 404);
+        }
+
+        // Delete blog
+        await BlogModel.findByIdAndDelete(blogID);
+
+        return res.status(204).end();
+    } catch (err) {
+        next(err);
+    }
+});
+
+export default router;

@@ -1,5 +1,5 @@
 import joi from "joi";
-import ApiError from "../utils/ApiError";
+import ApiError from "../utils/ApiError.js";
 
 const blogValidationSchema = joi.object({
     title: joi.string().min(5).max(200).required().messages({
