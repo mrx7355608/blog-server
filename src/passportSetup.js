@@ -3,7 +3,7 @@ import { Strategy } from "passport-local";
 import UserModel from "./models/user.model";
 import bc from "bcryptjs";
 
-export default function pasportSetup() {
+export default function passportSetup() {
     passport.use(
         new Strategy(async (username, password, done) => {
             // Check if user exists
