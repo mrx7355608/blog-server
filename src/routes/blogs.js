@@ -3,6 +3,7 @@ import isAuthenticated from "../middlewares/isAuthenticated.js";
 import BlogModel from "../models/blog.model.js";
 import ApiError from "../utils/ApiError.js";
 import validator from "validator";
+import slugify from "slugify";
 
 const router = Router();
 
@@ -49,6 +50,29 @@ router.get("/:id", async (req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: blog,
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
+// CREATE POST
+router.post("/", async (req, res, next) => {
+    try {
+        const data = req.body;
+        // TODO: validate blog data
+
+        // Create a new blog in database
+        const newBlog = await BlogModel.create({
+            ...data,
+            published_on: new Date(Date.now()).toDateString(),
+            slug: slugify(data.title),
+        });
+
+        // return response with new blog
+        return res.status(201).json({
+            ok: true,
+            data: newBlog,
         });
     } catch (err) {
         next(err);
