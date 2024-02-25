@@ -6,6 +6,7 @@ const blogSchema = new Schema({
     published_on: { type: String, required: true },
     is_published: { type: Boolean, required: true },
     tags: { type: [String], default: [] },
+    slug: { type: String, required: true },
 });
 
 const BlogModel = model("Blog", blogSchema);
