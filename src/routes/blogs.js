@@ -4,6 +4,7 @@ import BlogModel from "../models/blog.model.js";
 import ApiError from "../utils/ApiError.js";
 import validator from "validator";
 import slugify from "slugify";
+import blogValidator from "../validators/blog.validator.js";
 
 const router = Router();
 
@@ -60,7 +61,9 @@ router.get("/:id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
     try {
         const data = req.body;
-        // TODO: validate blog data
+
+        // Validate blog data
+        blogValidator(data);
 
         // Create a new blog in database
         const newBlog = await BlogModel.create({
