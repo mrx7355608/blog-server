@@ -1,25 +1,8 @@
 import { Router } from "express";
 import passport from "passport";
+import loginRateLimiter from "../middlewares/loginRateLimiter";
 
 const router = Router();
-
-// CREATE USER
-// router.post("/signup", async (req, res, next) => {
-//     try {
-//         const data = req.body;
-//         console.log(data);
-//         const newUser = await UserModel.create({
-//             ...data,
-//             password: await bc.hash(data.password, 12),
-//         });
-//         return res.status(201).json({
-//             ok: true,
-//             data: newUser,
-//         });
-//     } catch (error) {
-//         next(error);
-//     }
-// });
 
 const createSession = (user, req, res, next) => {
     req.login(user, (err) => {
@@ -36,7 +19,7 @@ const createSession = (user, req, res, next) => {
     });
 };
 
-router.post("/login", (req, res, next) => {
+router.post("/login", loginRateLimiter, (req, res, next) => {
     // Authenticate user with username and password (passport local strategy)
     passport.authenticate("local", (err, user, info) => {
         if (err) {

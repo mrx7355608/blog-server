@@ -5,6 +5,11 @@ const loginRateLimiter = rateLimit({
     limit: 3, // Only 3 requests in one day
     standardHeaders: true,
     legacyHeaders: false,
+    handler: (req, res, next) =>
+        res.status(429).json({
+            ok: false,
+            message: "Too many requests, try again later",
+        }),
 });
 
 export default loginRateLimiter;
