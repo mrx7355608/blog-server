@@ -39,7 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportSetup();
 
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 
 // ERROR HANDLERS
 app.use(catch404);
