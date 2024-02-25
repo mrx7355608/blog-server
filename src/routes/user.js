@@ -1,5 +1,5 @@
 import { Router } from "express";
-import isAuthenticated from "../middlewares/isAuthenticated";
+import isAuthenticated from "../middlewares/isAuthenticated.js";
 
 const router = Router();
 

@@ -40,6 +40,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportSetup();
 
+// ROUTES
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 

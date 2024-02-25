@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import loginRateLimiter from "../middlewares/loginRateLimiter";
+import loginRateLimiter from "../middlewares/loginRateLimiter.js";
 
 const router = Router();
 
