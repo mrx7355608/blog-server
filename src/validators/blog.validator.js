@@ -29,6 +29,13 @@ const blogValidationSchema = joi.object({
         "any.required": "Please select if blog should be published or not",
         "boolean.base": "is_published field must be a boolean value.",
     }),
+    summary: joi.string().min(100).max(700).required().messages({
+        "any.required": "Please enter a blog summary",
+        "string.empty": "Blog summary cannot be empty",
+        "string.min": "Blog summary should be 100 characters long at least",
+        "string.max": "Blog summary cannot be longer than 700 characters",
+        "string.base": "Please enter a valid blog summary",
+    }),
 });
 
 export default function blogValidator(data) {
