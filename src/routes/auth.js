@@ -37,4 +37,17 @@ router.post("/login", loginRateLimiter, (req, res, next) => {
     })(req, res, next);
 });
 
+router.post("/logout", (req, res, next) => {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+
+        res.status(200).json({
+            ok: true,
+            data: null,
+        });
+    });
+});
+
 export default router;
