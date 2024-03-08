@@ -6,6 +6,7 @@ import { connectToDatabase, disconnectDatabase } from "../src/utils/db.js";
 const agent = supertest(app);
 
 describe("Blog Tests", () => {
+    let sessionCookies;
     beforeAll(async () => await connectToDatabase());
     afterAll(async () => await disconnectDatabase());
 
@@ -23,12 +24,30 @@ describe("Blog Tests", () => {
                 tags: expect.any(Array),
             });
         });
-        it.todo("should paginate blogs");
+        it("should paginate blogs", async () => {
+            const response = await agent.get("/api/blogs?page=1").expect(200);
+            expect(response.body.ok).toBe(true);
+            expect(response.body.data.length).toBeLessThanOrEqual(10);
+            expect(response.body.data.length).not.toBe(0);
+
+            const response2 = await agent.get("/api/blogs?page=3").expect(200);
+            expect(response2.body.ok).toBe(true);
+            expect(response2.body.data.length).toBe(0);
+        });
     });
 
     describe("Auth requests", () => {
-        it.todo("should not allow un-authenticated requests");
-        it.todo("should allow authenticated requests");
+        it("should not allow un-authenticated requests", async () => {
+            const response = await agent.post("/api/blogs").expect(401);
+            expect(response.body.ok).toBe(false);
+            expect(response.body.error).toBe("Not authenticated");
+        });
+        it("should allow authenticated requests", async () => {
+            const response = await agent
+                .post("/auth/login")
+                .send({})
+                .expect(200);
+        });
     });
 
     describe("Create blogs", () => {

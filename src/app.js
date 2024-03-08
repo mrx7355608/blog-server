@@ -21,7 +21,7 @@ app.use(
     cors({
         origin: process.env.FRONTEND_URL,
         credentials: true,
-    }),
+    })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -44,7 +44,7 @@ app.use(
         },
         resave: false,
         saveUninitialized: false,
-    }),
+    })
 );
 app.use(passport.initialize());
 app.use(passport.session());
