@@ -9,7 +9,7 @@ const listAllBlogs = async (page) => {
 
     const blogs = await BlogModel.find(
         { is_published: true },
-        "-__v -is_published",
+        "-__v -is_published"
     )
         .sort("-createdAt")
         .limit(limit)
@@ -43,8 +43,7 @@ const addBlog = async (data) => {
 };
 
 const editBlog = async (blogID, newBlogData) => {
-    // Validate new blog data
-    blogValidator(newBlogData);
+    // TODO: Validate new blog data
 
     // Check if blog exists
     const blog = await BlogModel.findById(blogID);
@@ -72,4 +71,53 @@ const removeBlog = async (blogID) => {
     return null;
 };
 
-export { listAllBlogs, listOneBlogById, addBlog, editBlog, removeBlog };
+const publishBlog = async (blogID) => {
+    // Check if blog exists
+    const blog = await BlogModel.findById(blogID);
+    if (!blog) {
+        throw new ApiError("Blog not found", 404);
+    }
+
+    if (blog.is_published === true) {
+        throw new ApiError("Blog is already published", 400);
+    }
+
+    const updatedBlog = await BlogModel.findByIdAndUpdate(
+        blogID,
+        { is_published: true },
+        {
+            new: true,
+        }
+    );
+    return updatedBlog;
+};
+
+const unpublishBlog = async (blogID) => {
+    // Check if blog exists
+    const blog = await BlogModel.findById(blogID);
+    if (!blog) {
+        throw new ApiError("Blog not found", 404);
+    }
+
+    if (blog.is_published === false) {
+        throw new ApiError("Blog is already un-published", 400);
+    }
+
+    const updatedBlog = await BlogModel.findByIdAndUpdate(
+        blogID,
+        { is_published: false },
+        {
+            new: true,
+        }
+    );
+    return updatedBlog;
+};
+export {
+    listAllBlogs,
+    listOneBlogById,
+    addBlog,
+    editBlog,
+    removeBlog,
+    publishBlog,
+    unpublishBlog,
+};

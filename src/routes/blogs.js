@@ -7,6 +7,8 @@ import {
     getBlogById,
     updateBlog,
     deleteBlog,
+    patchPublishBlog,
+    patchUnpublishBlog,
 } from "../controllers/blogs.controllers.js";
 
 const router = Router();
@@ -20,5 +22,7 @@ router.use(isAuthenticated);
 router.post("/", createNewBlog);
 router.patch("/:id", validateBlogId, updateBlog);
 router.delete("/:id", validateBlogId, deleteBlog);
+router.patch("/publish/:id", validateBlogId, patchPublishBlog);
+router.patch("/un-publish/:id", validateBlogId, patchUnpublishBlog);
 
 export default router;

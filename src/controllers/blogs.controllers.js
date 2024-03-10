@@ -4,6 +4,8 @@ import {
     editBlog,
     listAllBlogs,
     listOneBlogById,
+    publishBlog,
+    unpublishBlog,
     removeBlog,
 } from "../services/blogs.services.js";
 
@@ -53,4 +55,30 @@ const deleteBlog = catchAsyncError(async (httpObject) => {
     };
 });
 
-export { getAllBlogs, getBlogById, createNewBlog, updateBlog, deleteBlog };
+const patchPublishBlog = catchAsyncError(async (httpObject) => {
+    const blogID = httpObject.params.id;
+    const updatedBlog = await publishBlog(blogID);
+    return {
+        status: 200,
+        data: updatedBlog,
+    };
+});
+
+const patchUnpublishBlog = catchAsyncError(async (httpObject) => {
+    const blogID = httpObject.params.id;
+    const updatedBlog = await unpublishBlog(blogID);
+    return {
+        status: 200,
+        data: updatedBlog,
+    };
+});
+
+export {
+    getAllBlogs,
+    getBlogById,
+    createNewBlog,
+    updateBlog,
+    deleteBlog,
+    patchPublishBlog,
+    patchUnpublishBlog,
+};
