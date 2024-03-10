@@ -4,21 +4,23 @@ import validateBlogId from "../middlewares/validateBlogId.js";
 import {
     getAllBlogs,
     createNewBlog,
-    getBlogById,
     updateBlog,
     deleteBlog,
     patchPublishBlog,
     patchUnpublishBlog,
+    getPublishedBlogs,
+    getUnpublishedBlogs,
 } from "../controllers/blogs.controllers.js";
 
 const router = Router();
 
-router.get("/", getAllBlogs);
-router.get("/:id", validateBlogId, getBlogById);
+router.get("/published", getPublishedBlogs);
+router.get("/un-published", isAuthenticated, getUnpublishedBlogs);
 
 // Created a middleware to allow authenticated requests only
 router.use(isAuthenticated);
 
+router.get("/", getAllBlogs);
 router.post("/", createNewBlog);
 router.patch("/:id", validateBlogId, updateBlog);
 router.delete("/:id", validateBlogId, deleteBlog);

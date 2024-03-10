@@ -7,11 +7,31 @@ import {
     publishBlog,
     unpublishBlog,
     removeBlog,
+    listPublishedBlogs,
+    listUnpublishedBlogs,
 } from "../services/blogs.services.js";
 
 const getAllBlogs = catchAsyncError(async (httpObject) => {
     const page = httpObject.query.page * 1 || 1;
     const blogs = await listAllBlogs(page);
+    return {
+        status: 200,
+        data: blogs,
+    };
+});
+
+const getPublishedBlogs = catchAsyncError(async (httpObject) => {
+    const page = httpObject.query.page * 1 || 1;
+    const blogs = await listPublishedBlogs(page);
+    return {
+        status: 200,
+        data: blogs,
+    };
+});
+
+const getUnpublishedBlogs = catchAsyncError(async (httpObject) => {
+    const page = httpObject.query.page * 1 || 1;
+    const blogs = await listUnpublishedBlogs(page);
     return {
         status: 200,
         data: blogs,
@@ -81,4 +101,6 @@ export {
     deleteBlog,
     patchPublishBlog,
     patchUnpublishBlog,
+    getPublishedBlogs,
+    getUnpublishedBlogs,
 };
