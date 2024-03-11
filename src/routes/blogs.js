@@ -10,12 +10,14 @@ import {
     patchUnpublishBlog,
     getPublishedBlogs,
     getUnpublishedBlogs,
+    getBlogBySlug,
 } from "../controllers/blogs.controllers.js";
 
 const router = Router();
 
 router.get("/published", getPublishedBlogs);
 router.get("/un-published", isAuthenticated, getUnpublishedBlogs);
+router.get("/:slug", getBlogBySlug);
 
 // Created a middleware to allow authenticated requests only
 router.use(isAuthenticated);

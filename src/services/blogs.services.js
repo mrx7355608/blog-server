@@ -14,6 +14,14 @@ const listAllBlogs = async (page) => {
     return blogs;
 };
 
+const listBlogBySlug = async (slug) => {
+    const blog = await BlogModel.findOne({ slug }, "-__v");
+    if (!blog) {
+        throw new ApiError("Blog not found", 404);
+    }
+    return blog;
+};
+
 const listPublishedBlogs = async (page) => {
     const limit = 10;
     const skip = (page - 1) * limit;
@@ -147,4 +155,5 @@ export {
     unpublishBlog,
     listPublishedBlogs,
     listUnpublishedBlogs,
+    listBlogBySlug,
 };

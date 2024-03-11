@@ -9,6 +9,7 @@ import {
     removeBlog,
     listPublishedBlogs,
     listUnpublishedBlogs,
+    listBlogBySlug,
 } from "../services/blogs.services.js";
 
 const getAllBlogs = catchAsyncError(async (httpObject) => {
@@ -17,6 +18,15 @@ const getAllBlogs = catchAsyncError(async (httpObject) => {
     return {
         status: 200,
         data: blogs,
+    };
+});
+
+const getBlogBySlug = catchAsyncError(async (httpObject) => {
+    const { slug } = httpObject.params;
+    const blog = await listBlogBySlug(slug);
+    return {
+        status: 200,
+        data: blog,
     };
 });
 
@@ -103,4 +113,5 @@ export {
     patchUnpublishBlog,
     getPublishedBlogs,
     getUnpublishedBlogs,
+    getBlogBySlug,
 };
