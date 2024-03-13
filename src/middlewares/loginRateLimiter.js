@@ -8,7 +8,7 @@ const loginRateLimiter = rateLimit({
     handler: (req, res, next) =>
         res.status(429).json({
             ok: false,
-            message: "Too many requests, try again later",
+            error: "Too many requests, try again later",
         }),
 });
 
