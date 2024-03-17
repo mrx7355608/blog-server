@@ -11,6 +11,7 @@ import {
     getPublishedBlogs,
     getUnpublishedBlogs,
     getBlogBySlug,
+    getBlogById,
 } from "../controllers/blogs.controllers.js";
 
 const router = Router();
@@ -23,6 +24,7 @@ router.get("/:slug", getBlogBySlug);
 router.use(isAuthenticated);
 
 router.get("/", getAllBlogs);
+router.get("/id/:id", getBlogById);
 router.post("/", createNewBlog);
 router.patch("/:id", validateBlogId, updateBlog);
 router.delete("/:id", validateBlogId, deleteBlog);
