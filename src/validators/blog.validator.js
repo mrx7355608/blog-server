@@ -38,8 +38,44 @@ const blogValidationSchema = joi.object({
     }),
 });
 
-export default function blogValidator(data) {
+const editBlogValidationSchema = joi.object({
+    title: joi.string().min(5).max(50).required().messages({
+        "string.base": `"title" must be a string`,
+        "string.empty": `"title" cannot be empty`,
+        "string.min": `"title" must be at least {#limit} characters long`,
+        "string.max": `"title" cannot be longer than {#limit} characters`,
+        "any.required": `"title" is required`,
+    }),
+    content: joi.string().min(100).required().messages({
+        "string.base": `"content" must be a string`,
+        "string.empty": `"content" cannot be empty`,
+        "string.min": `"content" must be at least {#limit} characters long`,
+        "any.required": `"content" is required`,
+    }),
+    tags: joi.array().items(joi.string()).min(1).required().messages({
+        "array.base": `"tags" must be an array of strings`,
+        "array.empty": `"tags" cannot be empty`,
+        "array.min": `"at least one tag is required"`,
+        "any.required": `"tags" is required`,
+    }),
+    summary: joi.string().min(50).max(300).required().messages({
+        "string.base": `"summary" must be a string`,
+        "string.empty": `"summary" cannot be empty`,
+        "string.min": `"summary" must be at least {#limit} characters long`,
+        "string.max": `"summary" cannot be longer than {#limit} characters`,
+        "any.required": `"summary" is required`,
+    }),
+});
+
+export function blogValidator(data) {
     const { error } = blogValidationSchema.validate(data);
+    if (error) {
+        throw new ApiError(error.message, 400);
+    }
+}
+
+export function editBlogValidator(data) {
+    const { error } = editBlogValidationSchema.validate(data);
     if (error) {
         throw new ApiError(error.message, 400);
     }

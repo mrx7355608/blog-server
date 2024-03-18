@@ -1,5 +1,8 @@
 import BlogModel from "../models/blog.model.js";
-import blogValidator from "../validators/blog.validator.js";
+import {
+    blogValidator,
+    editBlogValidator,
+} from "../validators/blog.validator.js";
 import slugify from "slugify";
 import ApiError from "../utils/ApiError.js";
 
@@ -76,7 +79,8 @@ const addBlog = async (data) => {
 };
 
 const editBlog = async (blogID, newBlogData) => {
-    // TODO: Validate new blog data
+    // Validate new blog data
+    editBlogValidator(newBlogData);
 
     // Check if blog exists
     const blog = await BlogModel.findById(blogID);
