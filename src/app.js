@@ -11,10 +11,16 @@ import { catch404, globalErrorHandler } from "./utils/errorHandlers.js";
 import authRouter from "./routes/auth.js";
 import userRouter from "./routes/user.js";
 import blogRouter from "./routes/blogs.js";
+import path from "path";
 
 const app = express();
 
-app.use(helmet());
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// app.use(helmet());
 app.use(hpp());
 app.use(morgan("combined"));
 app.use(
@@ -25,6 +31,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "..", "dist")));
 
 const MongoStore = connectMongo(session);
 const mongoSessionStore = new MongoStore({
@@ -54,6 +61,9 @@ passportSetup();
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/blogs", blogRouter);
+app.get("*", (req, res) => {
+    return res.sendFile(path.join(__dirname, "..", "dist", "index.html"));
+});
 
 // ERROR HANDLERS
 app.use(catch404);

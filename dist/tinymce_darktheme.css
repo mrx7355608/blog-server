@@ -1,0 +1,12 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+p,span {
+    color: lightgray;
+}
+
+a {
+    color: skyblue;
+}
