@@ -1,1 +1,0 @@
-import{j as r}from"./index-5K3EF7jN.js";import{I as t,A as i}from"./AdminBlogCard-KDGVraov.js";import"./useAuthFetch-8zPIWFgp.js";import"./blog.services-CWE2Esu6.js";function e(){return r.jsx("div",{className:"flex items-start w-full flex-col gap-3 p-6",children:r.jsx(t,{endpoint:"/api/blogs/un-published",Card:i})})}export{e as default};
