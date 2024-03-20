@@ -48,6 +48,7 @@ app.use(
             httpOnly: true,
             secure: process.env.NODE_ENV === "production" ? true : false,
             proxy: true,
+            sameSite: "none",
         },
         resave: false,
         saveUninitialized: false,
