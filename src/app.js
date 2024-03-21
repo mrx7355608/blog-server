@@ -43,11 +43,11 @@ app.use(
     session({
         secret: process.env.SESSIONS_SECRET,
         store: mongoSessionStore,
+        proxy: true,
         cookie: {
             maxAge: 24 * 3600 * 1000,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production" ? true : false,
-            proxy: true,
             sameSite: "none",
         },
         resave: false,
