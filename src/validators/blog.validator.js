@@ -10,11 +10,10 @@ const blogValidationSchema = joi.object({
         "string.base": "Please enter a valid blog title",
     }),
 
-    content: joi.string().min(200).max(4000).required().messages({
+    content: joi.string().min(200).required().messages({
         "any.required": "Please enter a blog content",
         "string.empty": "Blog content cannot be empty",
         "string.min": "Blog content should be 200 characters long at least",
-        "string.max": "Blog content cannot be longer than 4000 characters",
         "string.base": "Please enter a valid blog content",
     }),
 
